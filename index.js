@@ -34,6 +34,16 @@ function allCards(req, res) {
     }
 
     console.log(arrayOfLinks);
+    // arrayOfLinks - iterate and request content of 'pre' tag from each page
+    const arrayOfContent = arrayOfLinks.map(link => {
+      request(link, (error, response, html) => {
+        const textFromPage = cheerio.load(html).text();
+        // let result = scrap('pre', html);
+
+        console.log('///////////////////////////////////////////////////////////');
+        console.log(textFromPage);
+      });
+    });
 
 
 
