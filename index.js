@@ -1,55 +1,53 @@
 'use strict';
 
-/*
- *  setting up
- */
-
 const express = require('express');
+const request = require('request');
+const cheerio = require('cheerio');
 const app = express();
 require('dotenv').config();
 
 const port = process.env.PORT;
 
-/*
- *  routing
- */
+//--------------------------------------------------------------
 
 app.get('/', allCards);
 
-/**
- *  main part
- */
+//--------------------------------------------------------------
 
-function allCards(request, response) {
+function allCards(req, res) {
 
-  
-  // set a page for parsing (need to make validation here)
+  const link = 'https://github.com/polevoyd/js-challenges';
 
-  const link = 'https://repl.it/@polevoyd';
   // prepare request to scrape cards from page
-  let xhr = new XMLHttpRequest();
-  xhr.onload = function(){
-    const doc = this.responseXML;
-    // select all cards and push them into array
-    doc.querySelectorAll('.repl-item-title').forEach(element => {
-      const cardObject = {
-        name: element.innerText,
-        category: 'new'
-      };
-      console.log(cardObject);
-    });
-  };
-  xhr.open('GET', link);
-  xhr.responseType = 'document';
-  xhr.send();
 
-  // after request sent, wait 2 sec and dispatch array to state
-  //   setTimeout(() => {
-  // this.props.dispatch(addCards(userName, arrayOfCards));
-  // arrayOfCards = [];
-  //   }, 2000);
+  request(link, (error, response, html) => {
 
-  response.send('hello!');
+    const scrap = cheerio.load(html);
+    let result = scrap('.content', html).children();
+
+    const arrayOfLinks = [];
+
+    for (let i = 0; i < result.length; i++) {
+    //   arrayOfLinks.push(result[i].children[0].attribs.href);
+
+    console.log('####################################################');
+    console.log(result[i].children[0].attribs.href.split('/')[5]);
+    
+    }
+
+    // https://github.com/polevoyd/js-challenges/blob/master/ADS.js
+    // https://raw.githubusercontent.com/polevoyd/js-challenges/master/ADS.js
+
+
+
+
+
+
+
+
+    res.send('hello!');
+
+  });
 
 }
 
