@@ -1,0 +1,23 @@
+{
+  "name": "to-know-backend",
+  "version": "1.0.0",
+  "description": "Server-side for a 'to-know' app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polevoyd/to-know-backend.git"
+  },
+  "author": "Dmitry Polevoy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/polevoyd/to-know-backend/issues"
+  },
+  "homepage": "https://github.com/polevoyd/to-know-backend#readme",
+  "dependencies": {
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4"
+  }
+}
