@@ -16,10 +16,10 @@ app.get('/', allCards);
 
 function allCards(req, res) {
 
+  // input: { username: , repository: };
   const link = 'https://github.com/polevoyd/js-challenges';
 
   // prepare request to scrape cards from page
-
   request(link, (error, response, html) => {
 
     const scrap = cheerio.load(html);
@@ -28,15 +28,12 @@ function allCards(req, res) {
     const arrayOfLinks = [];
 
     for (let i = 0; i < result.length; i++) {
-    //   arrayOfLinks.push(result[i].children[0].attribs.href);
-
-    console.log('####################################################');
-    console.log(result[i].children[0].attribs.href.split('/')[5]);
-    
+      const nameOfFile = result[i].children[0].attribs.href.split('/')[5];
+      const preLink = 'https://raw.githubusercontent.com/polevoyd/js-challenges/master/';
+      arrayOfLinks.push(preLink + nameOfFile);
     }
 
-    // https://github.com/polevoyd/js-challenges/blob/master/ADS.js
-    // https://raw.githubusercontent.com/polevoyd/js-challenges/master/ADS.js
+    console.log(arrayOfLinks);
 
 
 
