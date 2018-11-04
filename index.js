@@ -12,6 +12,14 @@ const port = process.env.PORT;
 
 app.get('/', allCards);
 
+// to enable cros-origin
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 //--------------------------------------------------------------
 
 function allCards(req, res) {
@@ -25,25 +33,39 @@ function allCards(req, res) {
     const scrap = cheerio.load(html);
     let result = scrap('.content', html).children();
 
-    const arrayOfLinks = [];
+    const arrayOfLinksAndNames = [];
 
     for (let i = 0; i < result.length; i++) {
       const nameOfFile = result[i].children[0].attribs.href.split('/')[5];
       const preLink = 'https://raw.githubusercontent.com/polevoyd/js-challenges/master/';
-      arrayOfLinks.push(preLink + nameOfFile);
+      arrayOfLinksAndNames.push({
+        name: nameOfFile,
+        content: null,
+        link: preLink + nameOfFile
+      });
     }
 
-    console.log(arrayOfLinks);
-    // arrayOfLinks - iterate and request content of 'pre' tag from each page
-    const arrayOfContent = arrayOfLinks.map(link => {
-      request(link, (error, response, html) => {
+    // final array we going to 
+    let arrayOfChallenges = [];
+
+    for (let i=0; i < arrayOfLinksAndNames.length; i++) {
+      request(arrayOfLinksAndNames[i].link, (error, response, html) => {
         const textFromPage = cheerio.load(html).text();
-        // let result = scrap('pre', html);
-
-        console.log('///////////////////////////////////////////////////////////');
-        console.log(textFromPage);
+        const fileObject = {
+          name: arrayOfLinksAndNames[i].name,
+          code: textFromPage,
+          link: arrayOfLinksAndNames[i].link
+        };
+        arrayOfChallenges.push(fileObject);
       });
-    });
+    }
+    
+    console.log(arrayOfChallenges);
+    console.log(`=========================================================
+    =====================================================================
+    =======================================================================`);
+
+    res.send(arrayOfChallenges);
 
 
 
@@ -51,8 +73,6 @@ function allCards(req, res) {
 
 
 
-
-    res.send('hello!');
 
   });
 
