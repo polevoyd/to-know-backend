@@ -13,7 +13,7 @@ const port = process.env.PORT;
 app.get('/', (req, res) => {
 
   // input: { username: , repository: };
-  const link = 'https://github.com/polevoyd/js-challenges';
+  const link = 'https://github.com/polevoyd/to-know-content';
 
   // prepare request to scrape cards from page
   request(link, (error, response, html) => {
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
     for (let i = 0; i < result.length; i++) {
       const nameOfFile = result[i].children[0].attribs.href.split('/')[5];
-      const preLink = 'https://raw.githubusercontent.com/polevoyd/js-challenges/master/';
+      const preLink = 'https://raw.githubusercontent.com/polevoyd/to-know-content/master/';
       arrayOfLinksAndNames.push({
         name: nameOfFile,
         link: preLink + nameOfFile
