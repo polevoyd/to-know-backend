@@ -12,8 +12,10 @@ const port = process.env.PORT;
 
 app.get('/', (req, res) => {
 
+  const nameRepo = req.query.repo.split('/').splice(3,3).join('/').concat('/master/');
+
   // input: { username: , repository: };
-  const link = 'https://github.com/polevoyd/to-know-content';
+  const link = req.query.repo;
 
   // prepare request to scrape cards from page
   request(link, (error, response, html) => {
@@ -25,7 +27,7 @@ app.get('/', (req, res) => {
 
     for (let i = 0; i < result.length; i++) {
       const nameOfFile = result[i].children[0].attribs.href.split('/')[5];
-      const preLink = 'https://raw.githubusercontent.com/polevoyd/to-know-content/master/';
+      const preLink = `https://raw.githubusercontent.com/${nameRepo}`;
       arrayOfLinksAndNames.push({
         name: nameOfFile,
         link: preLink + nameOfFile
