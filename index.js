@@ -10,6 +10,14 @@ const port = process.env.PORT;
 
 //--------------------------------------------------------------
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+//--------------------------------------------------------------
+
 app.get('/', (req, res) => {
 
   const nameRepo = req.query.repo.split('/').splice(3,3).join('/').concat('/master/');
